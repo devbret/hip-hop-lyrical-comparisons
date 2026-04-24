@@ -1,4 +1,4 @@
-## Hip-Hop Lyrical Comparisons
+# Hip-Hop Lyrical Comparisons
 
 Analyzes song lyrics to find, count and export unique comparison-based lines containing either "than" or "like".
 
