@@ -11,8 +11,8 @@ OUTPUT_FILE = "comparison_statements.csv"
 def clean_line(line: str) -> str:
     line = line.lower()
 
-    line = line.replace("’", "'")
-    line = line.replace("‘", "'")
+    line = line.replace("'", "'")
+    line = line.replace("'", "'")
     line = line.replace("“", '"')
     line = line.replace("”", '"')
 
