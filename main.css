@@ -248,7 +248,7 @@ input[type="number"] {
 
 .chart {
   width: 100%;
-  min-height: 360px;
+  min-height: 100%;
   padding: 10px 18px 18px;
 }
 

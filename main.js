@@ -480,7 +480,12 @@ function renderStatementChart() {
     margin.top + margin.bottom + data.length * rowHeight,
   );
 
-  const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`);
+  const svg = container
+    .append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("width", "100%")
+    .attr("height", height)
+    .attr("preserveAspectRatio", "xMinYMin meet");
 
   const x = d3
     .scaleLinear()
@@ -663,13 +668,25 @@ function renderHorizontalBars(selector, data, options) {
 
   const width = container.node().clientWidth;
   const rowHeight = 28;
-  const margin = { top: 12, right: 42, bottom: 28, left: 190 };
+
+  const margin = {
+    top: 12,
+    right: options.marginRight ?? 42,
+    bottom: 28,
+    left: options.marginLeft ?? Math.min(66, Math.max(88, width * 0.22)),
+  };
+
   const height = Math.max(
     360,
     margin.top + margin.bottom + data.length * rowHeight,
   );
 
-  const svg = container.append("svg").attr("viewBox", `0 0 ${width} ${height}`);
+  const svg = container
+    .append("svg")
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("width", "100%")
+    .attr("height", height)
+    .attr("preserveAspectRatio", "xMinYMin meet");
 
   const x = d3
     .scaleLinear()
