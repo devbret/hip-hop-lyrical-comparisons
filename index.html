@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hip-Hop Lyrical Comparisons Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <link rel="stylesheet" href="/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <h1>Hip-Hop Lyrical Comparisons Dashboard</h1>
+    </header>
+
+    <main class="app">
+      <section id="stats" class="grid stats"></section>
+
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab-button active" data-tab="overview">Overview</button>
+        <button class="tab-button" data-tab="statements">Statements</button>
+        <button class="tab-button" data-tab="patterns">Patterns</button>
+        <button class="tab-button" data-tab="words">Words</button>
+        <button class="tab-button" data-tab="clusters">Clusters</button>
+        <button class="tab-button" data-tab="explorer">Explorer</button>
+      </nav>
+
+      <section id="activeFilters" class="active-filters"></section>
+
+      <section id="tab-overview" class="tab-panel active">
+        <section class="grid dashboard">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Overview Takeaways</h2>
+              </div>
+            </div>
+            <div id="takeaways" class="grid takeaway-grid"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Comparison Type Mix</h2>
+              </div>
+            </div>
+            <div id="typeDonut" class="chart"></div>
+          </article>
+        </section>
+
+        <section class="grid two-col">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Generated Insights</h2>
+              </div>
+            </div>
+            <ul id="insights" class="insight-list"></ul>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Repeat Distribution</h2>
+              </div>
+            </div>
+            <div id="distributionChart" class="chart"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="tab-statements" class="tab-panel">
+        <section class="grid dashboard">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Top Comparison Statements</h2>
+              </div>
+            </div>
+
+            <div class="controls">
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Search statements..."
+              />
+              <select id="typeFilter">
+                <option value="all">All types</option>
+                <option value="like">Like</option>
+                <option value="than">Than</option>
+                <option value="both">Both</option>
+              </select>
+              <select id="topN">
+                <option value="10">Top 10</option>
+                <option value="20" selected>Top 20</option>
+                <option value="50">Top 50</option>
+                <option value="100">Top 100</option>
+              </select>
+              <button id="clearFiltersButton">Clear filters</button>
+            </div>
+
+            <div id="statementChart" class="chart"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Word Count Vs. Frequency</h2>
+              </div>
+            </div>
+            <div id="scatterChart" class="chart"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="tab-patterns" class="tab-panel">
+        <section class="grid two-col">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Most Common Patterns</h2>
+              </div>
+            </div>
+            <div id="patternChart" class="chart"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Than Modifiers</h2>
+              </div>
+            </div>
+            <div id="modifierChart" class="chart"></div>
+          </article>
+        </section>
+
+        <section class="grid two-col">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Comparison Objects</h2>
+              </div>
+            </div>
+            <div id="objectChart" class="chart"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Pattern Groups</h2>
+              </div>
+            </div>
+            <div id="patternGroups" class="group-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="tab-words" class="tab-panel">
+        <section class="grid dashboard">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Word Cloud</h2>
+              </div>
+            </div>
+            <div class="controls">
+              <label>
+                Minimum count
+                <input id="minWordCount" type="number" value="1" min="1" />
+              </label>
+              <label>
+                Max words
+                <select id="maxWords">
+                  <option value="40">40</option>
+                  <option value="80" selected>80</option>
+                  <option value="140">140</option>
+                  <option value="240">240</option>
+                </select>
+              </label>
+              <label>
+                <select id="wordColorMode">
+                  <option value="frequency" selected>Color By frequency</option>
+                  <option value="role">Color By role</option>
+                </select>
+              </label>
+            </div>
+            <div id="wordCloud" class="chart"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Top Words</h2>
+              </div>
+            </div>
+            <div id="wordBarChart" class="chart"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="tab-clusters" class="tab-panel">
+        <section class="grid two-col">
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Grouped By Pattern</h2>
+              </div>
+            </div>
+            <div id="clusterByPattern" class="group-list"></div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title">Grouped By Comparison Object</h2>
+              </div>
+            </div>
+            <div id="clusterByObject" class="group-list"></div>
+          </article>
+        </section>
+      </section>
+
+      <section id="tab-explorer" class="tab-panel">
+        <section class="card table-card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Statement Explorer</h2>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Statement</th>
+                  <th>Count</th>
+                  <th>Type</th>
+                  <th>Pattern</th>
+                  <th>Object</th>
+                  <th>Modifier</th>
+                  <th>Words</th>
+                  <th>Chars</th>
+                </tr>
+              </thead>
+              <tbody id="statementTable"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <aside id="detailDrawer" class="drawer" aria-live="polite">
+      <button id="drawerClose" class="drawer-close">Close</button>
+      <h2 id="drawerTitle">Statement Details</h2>
+      <div id="drawerContent" class="detail-grid"></div>
+    </aside>
+
+    <div id="tooltip" class="tooltip"></div>
+
+    <script src="/main.js"></script>
+  </body>
+</html>

@@ -1,5 +1,7 @@
 # Hip-Hop Lyrical Comparisons
 
+![Screenshot of the Hip-Hop Lyrical Comparisons Dashboard frontend.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/7d0ebe4b-faff-4aca-b28b-70dfec2f5a0e.png)
+
 Analyzes song lyrics to find, count and export unique comparison-based lines containing either "than" or "like".
 
 ## Overview
