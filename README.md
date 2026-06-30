@@ -1,16 +1,16 @@
-# Hip-Hop Lyrical Comparisons
+# Hip-Hop Lyrical Comparisons Workflow
 
-![Screenshot of the Hip-Hop Lyrical Comparisons Dashboard frontend.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/7d0ebe4b-faff-4aca-b28b-70dfec2f5a0e.png)
+![Screenshot of the Hip-Hop Lyrical Comparisons Dashboard frontend.](https://hosting.photobucket.com/bbcfb0d4-be20-44a0-94dc-65bff8947cf2/276c5288-4aff-4bd6-9d85-20f6eb6d226e.png)
 
 Analyzes song lyrics for comparisons, enriches results with structured metadata and presents them through an interactive D3.js dashboard for exploring repeated phrases, patterns, modifiers, objects, and lyrical imagery.
 
-## Overview
+## Application Overview
 
-The Python script reads a plain text file of song lyrics, cleans each line and identifies lyrics containing standalone comparisons using words such as "_like_" or "_than_". During preprocessing, the script lowercases text, removes punctuation, normalizes whitespace and preserves each line as its own unit for analysis. It then extracts and enriches each comparison statement with useful metadata, including the comparison type, word count, character count, phrase pattern, comparison object, nearby marker context and any modifier appearing before "_than_". The processed results are exported both as a `.CSV` file for review and `.JSON` file designed for dashboard visualization.
+The Python script reads a plain text file of song lyrics, cleans each line and identifies lyrics containing standalone comparisons using words such as "_like_" or "_than_". During preprocessing, the script lowercases text, removes punctuation, normalizes whitespace and preserves each line as its own unit for analysis. It then extracts each comparison statement with metadata, including the comparison type, word count, character count, phrase pattern, comparison object, nearby marker context and any modifier appearing before "_than_". The processed results are exported both as a `.csv` file for review and `.json` file designed for dashboard visualization.
 
-The frontend uses D3.js to turn the generated `.JSON` data into an interactive analysis dashboard. It displays summary cards, takeaways, insight bullets, charts, word visualizations, grouped patterns, statement clusters and an explorer table for reviewing individual lines. Users can filter the dataset by comparison type, phrase pattern, comparison object, "_than_" modifier, search text or selected word from the word cloud. Interactive charts, tooltips, tabs and a detail panel make it easier to explore repeated comparisons, phrase structures, comparison types and imagery across the lyrics.
+The frontend uses D3.js to turn the generated `.json` data into an interactive analysis dashboard. It displays summary cards, takeaways, insight bullets, charts, word visualizations, grouped patterns, statement clusters and an explorer table for reviewing individual lines. Users can filter the dataset by comparison type, phrase pattern, comparison object, "_than_" modifier, search text or selected word from the word cloud. Interactive charts, tooltips, tabs and a detail panel make it easier to explore repeated comparisons, phrase structures, comparison types and imagery across the lyrics.
 
-## Set Up
+## Basic Setup Instructions
 
 Below are instructions for installing and running this application on a Linux machine.
 
@@ -34,19 +34,21 @@ Below are instructions for installing and running this application on a Linux ma
 
 6. Activate your virtual environment: `source venv/bin/activate`
 
-7. Place your `.TXT` input file at the root of this repo
+7. Place your `.txt` input file at the root of this repo
 
-8. Edit the value for `INPUT_FILE` on line 8 of `app.py` to match your `.TXT` filename
+8. Edit the value for `INPUT_FILE` on line 8 of `app.py` to match your `.txt` filename
 
-9. Run `app.py` to process: `python3 app.py`
+9. Run the application: `python3 app.py`
 
-10. The results will be returned to you at the root of this repo as `.CSV` and `.JSON` files
+10. The results will be returned to you at the root of this repo as `.csv` and `.json` files
 
-11. Start a web server to explore the output data: `python3 -m http.server 8000`
+11. Start an HTTP server: `python3 -m http.server 8000`
 
-12. Launch the frontend by visiting `http://localhost:8000` in a browser
+12. Launch the frontend in a browser: `http://localhost:8000`
 
-13. Exit the virtual environment: `deactivate`
+13. When finished, close teh HTTP server: `CTRL + C`
+
+14. Exit the virtual environment: `deactivate`
 
 ## Other Considerations
 

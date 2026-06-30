@@ -6,7 +6,7 @@
     <title>Hip-Hop Lyrical Comparisons Dashboard</title>
 
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="main.css" />
   </head>
 
   <body>
@@ -15,6 +15,8 @@
     </header>
 
     <main class="app">
+      <div id="loadError" class="load-error" role="alert" hidden></div>
+
       <section id="stats" class="grid stats"></section>
 
       <nav class="tabs" aria-label="Dashboard sections">
@@ -257,6 +259,6 @@
 
     <div id="tooltip" class="tooltip"></div>
 
-    <script src="/main.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>

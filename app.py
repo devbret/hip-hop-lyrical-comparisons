@@ -10,17 +10,24 @@ INPUT_FILE = "lyrics.txt"
 OUTPUT_CSV_FILE = "comparison_statements.csv"
 OUTPUT_JSON_FILE = "comparison_dashboard.json"
 
+ARTIFACT_PHRASES = []
+
 
 def clean_line(line: str) -> str:
     line = line.lower()
 
-    line = line.replace("'", "'")
-    line = line.replace("'", "'")
-    line = line.replace("“", '"')
-    line = line.replace("”", '"')
+    line = line.replace("’", "'").replace("‘", "'")
+    line = line.replace("“", '"').replace("”", '"')
+
+    for phrase in ARTIFACT_PHRASES:
+        line = line.replace(phrase, " ")
 
     line = re.sub(r"\[.*?\]", " ", line)
-    line = re.sub(r"[^a-z0-9\s]", " ", line)
+
+    line = re.sub(r"[^a-z0-9\s']", " ", line)
+
+    line = re.sub(r"(?<![a-z0-9])'|'(?![a-z0-9])", " ", line)
+
     line = re.sub(r"\s+", " ", line).strip()
 
     return line
@@ -63,16 +70,6 @@ def get_marker_context(line: str) -> dict:
 
 
 def extract_pattern(line: str) -> str:
-    """
-    Extracts a compact phrase pattern for easier D3 grouping.
-
-    Examples:
-    - "you move like a ghost" -> "like a"
-    - "nothing like you" -> "like you"
-    - "better than before" -> "better than"
-    - "more than enough" -> "more than"
-    """
-
     context = get_marker_context(line)
 
     marker = context["first_marker"]
@@ -92,14 +89,6 @@ def extract_pattern(line: str) -> str:
 
 
 def extract_comparison_object(line: str) -> str:
-    """
-    Extracts everything after the first comparison marker.
-
-    Examples:
-    - "you move like a ghost" -> "a ghost"
-    - "better than before" -> "before"
-    """
-
     match = re.search(r"\b(like|than)\b\s+(.+)$", line)
 
     if not match:
@@ -109,17 +98,6 @@ def extract_comparison_object(line: str) -> str:
 
 
 def extract_than_modifier(line: str) -> str:
-    """
-    Extracts the word immediately before 'than'.
-
-    Examples:
-    - "better than before" -> "better"
-    - "more than enough" -> "more"
-    - "stronger than you" -> "stronger"
-
-    This is mainly useful for visualizing comparative intensity.
-    """
-
     words = line.split()
 
     for index, word in enumerate(words):

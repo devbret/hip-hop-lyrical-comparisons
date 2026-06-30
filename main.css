@@ -61,25 +61,28 @@ h1 {
   letter-spacing: -0.06em;
 }
 
-.subtitle {
-  max-width: 760px;
-  color: var(--muted);
-  font-size: 1rem;
-  line-height: 1.6;
-}
-
 code {
   color: #bae6fd;
+}
+
+.load-error {
+  margin-bottom: 18px;
+  padding: 16px 18px;
+  background: rgba(251, 113, 133, 0.12);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  border-radius: 16px;
+  color: #fecdd3;
+  line-height: 1.5;
+}
+
+.load-error[hidden] {
+  display: none;
 }
 
 .app {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 24px 48px;
-}
-
-.uploader label {
-  color: var(--muted);
 }
 
 button,
@@ -260,11 +263,6 @@ input[type="number"] {
 
 .two-col {
   grid-template-columns: 1fr 1fr;
-  margin-top: 18px;
-}
-
-.three-col {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 18px;
 }
 
@@ -582,7 +580,6 @@ summary {
 
   .dashboard,
   .two-col,
-  .three-col,
   .takeaway-grid {
     grid-template-columns: 1fr;
   }

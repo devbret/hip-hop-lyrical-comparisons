@@ -114,6 +114,13 @@ function renderDashboard(data) {
   renderDistributionChart();
   renderScatterChart();
 
+  renderPatternsTab();
+  renderWordCloud();
+  renderWordBarChart();
+  renderClusters();
+}
+
+function renderPatternsTab() {
   renderHorizontalBars("#patternChart", state.data.patterns.slice(0, 18), {
     labelKey: "pattern",
     valueKey: "count",
@@ -146,10 +153,7 @@ function renderDashboard(data) {
     },
   );
 
-  renderWordCloud();
-  renderWordBarChart();
   renderPatternGroups();
-  renderClusters();
 }
 
 function renderStats() {
@@ -1221,39 +1225,7 @@ function showTab(tabName) {
   }
 
   if (tabName === "patterns") {
-    renderHorizontalBars("#patternChart", state.data.patterns.slice(0, 18), {
-      labelKey: "pattern",
-      valueKey: "count",
-      color: "#38bdf8",
-      emptyMessage: "No pattern data found.",
-      filterType: "pattern",
-    });
-
-    renderHorizontalBars(
-      "#modifierChart",
-      state.data.than_modifiers.slice(0, 18),
-      {
-        labelKey: "than_modifier",
-        valueKey: "count",
-        color: "#a78bfa",
-        emptyMessage: "No than-modifier data found.",
-        filterType: "modifier",
-      },
-    );
-
-    renderHorizontalBars(
-      "#objectChart",
-      state.data.comparison_objects.slice(0, 18),
-      {
-        labelKey: "comparison_object",
-        valueKey: "count",
-        color: "#fbbf24",
-        emptyMessage: "No comparison-object data found.",
-        filterType: "object",
-      },
-    );
-
-    renderPatternGroups();
+    renderPatternsTab();
   }
 
   if (tabName === "words") {
@@ -1288,6 +1260,14 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function showLoadError(message) {
+  d3.select("#loadError").attr("hidden", null).html(message);
+}
+
+function hideLoadError() {
+  d3.select("#loadError").attr("hidden", true).html("");
+}
+
 async function loadDefaultJson() {
   try {
     const response = await fetch("comparison_dashboard.json", {
@@ -1299,9 +1279,21 @@ async function loadDefaultJson() {
     }
 
     const data = await response.json();
+
+    if (!data.statements || !data.statements.length) {
+      showLoadError(
+        "<strong>No comparison data found.</strong> Run <code>python3 app.py</code> to generate <code>comparison_dashboard.json</code>, then reload.",
+      );
+      return;
+    }
+
+    hideLoadError();
     renderDashboard(data);
   } catch (error) {
     console.error("Could not load comparison_dashboard.json:", error);
+    showLoadError(
+      "<strong>Could not load <code>comparison_dashboard.json</code>.</strong> Generate it with <code>python3 app.py</code> and serve this folder over HTTP (e.g. <code>python3 -m http.server 8000</code>).",
+    );
   }
 }
 
@@ -1330,9 +1322,11 @@ d3.selectAll(".tab-button").on("click", function () {
   showTab(this.dataset.tab);
 });
 
+let resizeTimer;
 window.addEventListener("resize", () => {
   if (!state.data) return;
-  renderDashboard(state.data);
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => renderDashboard(state.data), 150);
 });
 
 window.addEventListener("keydown", (event) => {
