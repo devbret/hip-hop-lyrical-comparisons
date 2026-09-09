@@ -12,11 +12,58 @@ OUTPUT_JSON_FILE = "comparison_dashboard.json"
 
 ARTIFACT_PHRASES = []
 
+MAX_OBJECT_WORDS = 4
+
+OBJECT_BOUNDARY_WORDS = frozenset({
+    "like",
+    "than",
+    "and",
+    "but",
+    "or",
+    "nor",
+    "so",
+    "yet",
+    "cause",
+    "because",
+    "when",
+    "while",
+    "if",
+    "though",
+    "although",
+    "who",
+    "which",
+    "that",
+    "til",
+    "till",
+    "until",
+})
+
+TRAILING_FUNCTION_WORDS = frozenset({
+    "a",
+    "an",
+    "the",
+    "of",
+    "in",
+    "on",
+    "at",
+    "with",
+    "from",
+    "for",
+    "to",
+    "my",
+    "your",
+    "his",
+    "her",
+    "its",
+    "our",
+    "their",
+})
+
 
 def clean_line(line: str) -> str:
     line = line.lower()
 
-    line = line.replace("’", "'").replace("‘", "'")
+    line = line.replace("'", "'").replace("'", "'")
     line = line.replace("“", '"').replace("”", '"')
 
     for phrase in ARTIFACT_PHRASES:
@@ -94,7 +141,23 @@ def extract_comparison_object(line: str) -> str:
     if not match:
         return ""
 
-    return match.group(2).strip()
+    words = match.group(2).split()
+
+    if not words:
+        return ""
+
+    kept = [words[0]]
+
+    for word in words[1:MAX_OBJECT_WORDS]:
+        if word in OBJECT_BOUNDARY_WORDS:
+            break
+
+        kept.append(word)
+
+    while len(kept) > 1 and kept[-1] in TRAILING_FUNCTION_WORDS:
+        kept.pop()
+
+    return " ".join(kept)
 
 
 def extract_than_modifier(line: str) -> str:
